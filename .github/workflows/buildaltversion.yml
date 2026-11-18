@@ -34,7 +34,7 @@ jobs:
               echo "yarn=1.21.1+build.3" >> "$GITHUB_OUTPUT"
               ;;
            "26.2")
-            echo "loom=1.17" >> "$GITHUB_OUTPUT"
+            echo "loom=1.17.21" >> "$GITHUB_OUTPUT"
             echo "java=21" >> "$GITHUB_OUTPUT"
             echo "gradle=9.5.1" >> "$GITHUB_OUTPUT"
             echo "loader=0.19.3" >> "$GITHUB_OUTPUT"
