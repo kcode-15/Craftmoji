@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "craftmoji",
+  "version": "${version}",
+  "name": "Craftmoji",
+  "description": "A client-side emoji picker that inserts Unicode emoji into Minecraft chat.",
+  "authors": ["kcode-15"],
+  "contact": {
+    "sources": "https://github.com/kcode-15/Craftmoji"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.kcode15.craftmoji.CraftmojiClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
