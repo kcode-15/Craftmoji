@@ -1,0 +1,79 @@
+name: Build selected Minecraft version
+
+on:
+  workflow_dispatch:
+    inputs:
+      mc_version:
+        description: Minecraft version
+        required: true
+        type: choice
+        options:
+          - "1.21.1"
+          - "26.2"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set dependency versions
+        id: versions
+        shell: bash
+        run: |
+          case "${{ inputs.mc_version }}" in
+            "1.21.1")
+              echo "loom=1.7.4" >> "$GITHUB_OUTPUT"
+              echo "java=21" >> "$GITHUB_OUTPUT"
+              echo "gradle=8.8" >> "$GITHUB_OUTPUT"
+              echo "loader=0.16.5" >> "$GITHUB_OUTPUT"
+              echo "api=0.102.1+1.21.1" >> "$GITHUB_OUTPUT"
+              echo "yarn=1.21.1+build.3" >> "$GITHUB_OUTPUT"
+              ;;
+            "26.2")
+              echo "loom=1.17" >> "$GITHUB_OUTPUT"
+              echo "java=25" >> "$GITHUB_OUTPUT"
+              echo "gradle=9.5.1" >> "$GITHUB_OUTPUT"
+              echo "loader=0.19.3" >> "$GITHUB_OUTPUT"
+              echo "api=0.152.1+26.2" >> "$GITHUB_OUTPUT"
+              echo "Unsupported Minecraft 26.2 Yarn mapping" >&2
+              exit 1
+              ;;
+            *)
+              echo "Unsupported Minecraft version" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "${{ steps.versions.outputs.java }}"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "${{ steps.versions.outputs.gradle }}"
+
+      - name: Override build properties
+        run: |
+          cat >> gradle.properties <<EOF
+          minecraft_version=${{ inputs.mc_version }}
+          loom_version=${{ steps.versions.outputs.loom }}
+          loader_version=${{ steps.versions.outputs.loader }}
+          fabric_api_version=${{ steps.versions.outputs.api }}
+          EOF
+
+      - name: Build selected mod
+        run: gradle build --no-daemon
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: craftmoji-${{ inputs.mc_version }}
+          path: build/libs/*.jar
+          if-no-files-found: error
