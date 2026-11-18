@@ -33,15 +33,13 @@ jobs:
               echo "api=0.102.1+1.21.1" >> "$GITHUB_OUTPUT"
               echo "yarn=1.21.1+build.3" >> "$GITHUB_OUTPUT"
               ;;
-            "26.2")
-              echo "loom=1.17" >> "$GITHUB_OUTPUT"
-              echo "java=25" >> "$GITHUB_OUTPUT"
-              echo "gradle=9.5.1" >> "$GITHUB_OUTPUT"
-              echo "loader=0.19.3" >> "$GITHUB_OUTPUT"
-              echo "api=0.152.1+26.2" >> "$GITHUB_OUTPUT"
-              echo "Unsupported Minecraft 26.2 Yarn mapping" >&2
-              exit 1
-              ;;
+           "26.2")
+            echo "loom=1.17" >> "$GITHUB_OUTPUT"
+            echo "java=21" >> "$GITHUB_OUTPUT"
+            echo "gradle=9.5.1" >> "$GITHUB_OUTPUT"
+            echo "loader=0.19.3" >> "$GITHUB_OUTPUT"
+            echo "api=0.152.1+26.2" >> "$GITHUB_OUTPUT"
+            ;;
             *)
               echo "Unsupported Minecraft version" >&2
               exit 1
